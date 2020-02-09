@@ -2,19 +2,20 @@ package com.jcaseydev;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class Main extends JFrame {
 
   Object[][] tableData = new Object[10][5];
+  private DecimalFormat format = new DecimalFormat("#.##");
+  String fileName;
 
   private void processData(String data) {
     Scanner scanner = new Scanner(data);
@@ -30,9 +31,9 @@ public class Main extends JFrame {
       // set values
       tableData[i][0] = size;
       tableData[i][1] = getMean(countData);
-      tableData[i][2] = getCoef(countData);
+      tableData[i][2] = format.format(getCoef(countData)) + "%";
       tableData[i][3] = getMean(timeData);
-      tableData[i][4] = getCoef(timeData);
+      tableData[i][4] = format.format(getCoef(timeData)) + "%";
     }
 
     scanner.close();
@@ -66,17 +67,18 @@ public class Main extends JFrame {
     if (result == JFileChooser.APPROVE_OPTION) {
       try {
         File file = fileChooser.getSelectedFile();
+        fileName = file.getName();
         BufferedReader br = new BufferedReader(new FileReader(file));
         StringBuilder data = new StringBuilder();
         String line = "";
-        while((line = br.readLine()) != null) {
+        while ((line = br.readLine()) != null) {
           data.append(line);
         }
+        br.close();
         processData(data.toString());
-      } catch (FileNotFoundException e) {
-        e.printStackTrace();
       } catch (IOException e) {
         e.printStackTrace();
+      }finally {
       }
     }
 
@@ -89,7 +91,7 @@ public class Main extends JFrame {
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     this.pack();
     this.setVisible(true);
-    this.setTitle("CMSC 451 PROJ. 2 VIEWER");
+    this.setTitle("CMSC 451 PROJ. 2: " + fileName);
   }
 
   public static void main(String[] args) {

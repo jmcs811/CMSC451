@@ -31,10 +31,10 @@ public class HeapSort implements SortInterface {
       int temp = list[0];
       list[0] = list[i];
       list[i] = temp;
+      count++;
 
       // call heapify to reduce heap
       heapify(list, i, 0);
-      count++;
     }
     long endTime = System.nanoTime();
     time = (endTime - startTime);
@@ -105,8 +105,6 @@ public class HeapSort implements SortInterface {
     }
     long endTime = System.nanoTime();
     time = (endTime - startTime);
-    System.out.println(
-        "\n\n***** TIME *****\n" + startTime + "\n" + endTime + "\n" + time + "\n**************\n");
     if (!isSorted(list)) {
       throw new UnsortedException();
     }
@@ -133,6 +131,7 @@ public class HeapSort implements SortInterface {
     int temp = a[i];
     a[i] = a[j];
     a[j] = temp;
+    count++;
   }
 
   @Override
